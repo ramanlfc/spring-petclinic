@@ -13,5 +13,11 @@ node{
     stage('docker build'){
         sh label: '', script: 'docker build -t ramanlfc/spring-petclinic:1 .'
     }
+
+    stage('docker push'){
+        withCredentials([usernamePassword(credentialsId: 'docker-hub-cred, passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh 'docker push ramanlfc/spring-petclinic:1'
+    }
        
 }
