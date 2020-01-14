@@ -15,10 +15,14 @@ node{
     }
 
     stage('docker push'){
+        
+        
         withCredentials([usernamePassword(credentialsId: 'docker-hub-cred', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
           sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
           sh 'docker push ramanlfc/spring-petclinic:1'
         }
+
+        emailext body: 'docker image for spring-petclinic has been pushed', subject: 'docker image pushed', to: 'john@abc.com'
     }
        
 }
